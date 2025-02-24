@@ -43,7 +43,7 @@ const index = async (req, res) => {
         const meetings = await MeetingHistory.find(query)
             .populate('attendes')
             .populate('attendesLead')
-            .populate('createBy');
+            .populate('createBy', 'firstName lastName username'); // Only fetch necessary fields
 
         console.log("Meetings fetched:", meetings);
         res.status(200).json(meetings);
@@ -65,7 +65,7 @@ const view = async (req, res) => {
         const meeting = await MeetingHistory.findById(id)
             .populate('attendes')
             .populate('attendesLead')
-            .populate('createBy');
+            .populate('createBy', 'firstName lastName username'); // Exclude password and other fields
 
         if (!meeting) return res.status(404).json({ message: "Meeting not found" });
 
