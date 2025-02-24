@@ -27,11 +27,26 @@ const View = () => {
 
 
     const fetchData = async () => {
-        setIsLoding(true)
-        let response = await getApi('api/meeting/view/', param.id)
-        setData(response?.data);
-        setIsLoding(false)
-    }
+        setIsLoding(true);
+        
+        try {
+            let response = await getApi('api/meeting/', param.id);
+            let meetingData = response?.data;
+    
+            if (meetingData?.createBy) {
+                let userResponse = meetingData.createBy;
+                console.log(userResponse);
+                meetingData.createdByName = userResponse?.firstName || 'Unknown'; 
+            }
+    
+            setData(meetingData);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setIsLoding(false);
+        }
+    };    
+    
 
     useEffect(() => {
         fetchData()
@@ -66,7 +81,7 @@ const View = () => {
     const handleDeleteMeeting = async (ids) => {
         try {
             setIsLoding(true)
-            let response = await deleteApi('api/meeting/delete/', params.id)
+            let response = await deleteApi('api/meeting/', params.id)
             if (response.status === 200) {
                 setDeleteMany(false)
                 navigate(-1)
