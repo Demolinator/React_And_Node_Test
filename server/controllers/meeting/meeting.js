@@ -96,7 +96,9 @@ const deleteData = async (req, res) => {
 // Delete multiple meetings
 const deleteMany = async (req, res) => {
     try {
-        const { ids } = req.body; // Expecting an array of meeting IDs
+        console.log("Delete request received:", req.body); // Debugging: Log the received request
+
+        const { ids } = req.body; // Ensure that `ids` is extracted from `req.body`
 
         if (!Array.isArray(ids) || ids.length === 0) {
             return res.status(400).json({ message: "Invalid request, provide an array of IDs" });
@@ -109,8 +111,10 @@ const deleteMany = async (req, res) => {
 
         res.status(200).json({ message: "Meetings deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: "Error deleting meetings", error });
+        console.error("Error deleting meetings:", error);
+        res.status(500).json({ message: "Error deleting meetings", error: error.message });
     }
 };
+
 
 module.exports = { add, index, view, deleteData, deleteMany };

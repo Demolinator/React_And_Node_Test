@@ -90,20 +90,21 @@ const Index = () => {
 
     const handleDeleteMeeting = async (ids) => {
         try {
-            setIsLoding(true)
-            let response = await deleteManyApi('api/meeting/deleteMany', ids)
+            setIsLoding(true);
+            let response = await deleteManyApi('api/meeting/deleteMany', { ids }); // Send IDs inside an object
+    
             if (response.status === 200) {
-                setSelectedValues([])
-                setDeleteMany(false)
-                setAction((pre) => !pre)
+                setSelectedValues([]);
+                setDeleteMany(false);
+                setAction((prev) => !prev);
             }
         } catch (error) {
-            console.log(error)
+            console.error("Error deleting meetings:", error);
+        } finally {
+            setIsLoding(false);
         }
-        finally {
-            setIsLoding(false)
-        }
-    }
+    };
+    
 
     // const [selectedColumns, setSelectedColumns] = useState([...tableColumns]);
     // const dataColumn = tableColumns?.filter(item => selectedColumns?.find(colum => colum?.Header === item.Header))
