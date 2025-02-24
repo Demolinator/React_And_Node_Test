@@ -72,21 +72,31 @@ const Index = () => {
         },
         { Header: "Date & Time", accessor: "dateTime", },
         { Header: "Time Stamp", accessor: "timestamp", },
-        { Header: "Create By", accessor: "createdByName", },
+        {
+            Header: "Created By",
+            accessor: "createBy",
+            cell: ({ value }) => (
+                <Text>
+                    {value?.firstName || ''} {value?.lastName || ''}
+                </Text>
+            )
+        },        
         ...(permission?.update || permission?.view || permission?.delete ? [actionHeader] : [])
 
     ];
 
     const fetchData = async () => {
-        setIsLoding(true)
-        const result = await dispatch(fetchMeetingData())
+        setIsLoding(true);
+        const result = await dispatch(fetchMeetingData());
         if (result.payload.status === 200) {
+            console.log(result?.payload?.data); // Check if 'createdByName' exists
             setData(result?.payload?.data);
         } else {
             toast.error("Failed to fetch data", "error");
         }
-        setIsLoding(false)
-    }
+        setIsLoding(false);
+    };
+    
 
     const handleDeleteMeeting = async (ids) => {
         try {

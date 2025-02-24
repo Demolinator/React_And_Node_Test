@@ -36,7 +36,7 @@ const View = () => {
             if (meetingData?.createBy) {
                 let userResponse = meetingData.createBy;
                 console.log(userResponse);
-                meetingData.createdByName = userResponse?.firstName || 'Unknown'; 
+                meetingData.createdByName = `${userResponse?.firstName || 'Unknown'} ${userResponse?.lastName || ''}`.trim();
             }
     
             setData(meetingData);
@@ -45,7 +45,7 @@ const View = () => {
         } finally {
             setIsLoding(false);
         }
-    };    
+    };       
     
 
     useEffect(() => {
